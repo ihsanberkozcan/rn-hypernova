@@ -8,16 +8,6 @@ rn-hypernova is a high-performance React Native library offering fast and effici
 npm install rn-hypernova
 ```
 
-## Usage
-
-
-```js
-import { multiply } from 'rn-hypernova';
-
-// ...
-
-const result = await multiply(3, 7);
-```
 
 
 ## Contributing
