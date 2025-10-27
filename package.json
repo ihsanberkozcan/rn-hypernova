@@ -1,6 +1,6 @@
 {
   "name": "rn-hypernova",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "rn-hypernova is a high-performance React Native library offering fast and efficient UI components. Built to handle any project size, it helps developers create powerful and seamless mobile apps with ease.",
   "source": "./src/index.tsx",
   "main": "./lib/commonjs/index.js",

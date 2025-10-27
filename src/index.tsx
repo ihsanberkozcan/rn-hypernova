@@ -34,5 +34,24 @@ export type { CardProps } from './components/Card';
 export { AppBar } from './components/AppBar';
 export type { AppBarProps } from './components/AppBar';
 
+export { Slider } from './components/Slider';
+export type { SliderProps } from './components/Slider';
+
+export { Snackbar } from './components/Snackbar';
+export type { SnackbarProps } from './components/Snackbar';
+
+export { TextArea } from './components/TextArea';
+export type { TextAreaProps } from './components/TextArea';
+
+export { BarLoader } from './components/Loading';
+export { CircularDotsLoader } from './components/Loading';
+export { OrbitLoader } from './components/Loading';
+export { PulseRingsLoader } from './components/Loading';
+export { SquareLoader } from './components/Loading';
+export { WaveLoader } from './components/Loading';
+
 export { ThemeProvider, useTheme } from './context/ThemeContext';
 export type { ThemeColors, ThemeProviderProps } from './context/ThemeContext';
+
+export { Skeleton } from './components/Skeleton';
+export type { SkeletonProps } from './components/Skeleton';

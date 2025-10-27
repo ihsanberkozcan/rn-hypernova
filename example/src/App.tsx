@@ -24,6 +24,16 @@ import {
   Card,
   Dialog,
   AppBar,
+  Slider,
+  BarLoader,
+  CircularDotsLoader,
+  OrbitLoader,
+  PulseRingsLoader,
+  SquareLoader,
+  WaveLoader,
+  Snackbar,
+  TextArea,
+  Skeleton,
 } from 'rn-hypernova';
 import MaterialIcons from '@expo/vector-icons/MaterialIcons';
 
@@ -50,7 +60,12 @@ type Screen =
   | 'appbar'
   | 'fab'
   | 'dialog'
-  | 'card';
+  | 'card'
+  | 'slider'
+  | 'loading'
+  | 'snackbar'
+  | 'textarea'
+  | 'skeleton';
 
 export default function App() {
   const [screen, setScreen] = useState<Screen>('menu');
@@ -157,6 +172,41 @@ export default function App() {
           onPress={() => setScreen('card')}
         >
           <Text style={styles.menuText}>Card</Text>
+          <MaterialIcons name="chevron-right" size={20} color="#999" />
+        </TouchableOpacity>
+        <TouchableOpacity
+          style={styles.menuItem}
+          onPress={() => setScreen('slider')}
+        >
+          <Text style={styles.menuText}>Slider</Text>
+          <MaterialIcons name="chevron-right" size={20} color="#999" />
+        </TouchableOpacity>
+        <TouchableOpacity
+          style={styles.menuItem}
+          onPress={() => setScreen('loading')}
+        >
+          <Text style={styles.menuText}>Loading</Text>
+          <MaterialIcons name="chevron-right" size={20} color="#999" />
+        </TouchableOpacity>
+        <TouchableOpacity
+          style={styles.menuItem}
+          onPress={() => setScreen('snackbar')}
+        >
+          <Text style={styles.menuText}>Snackbar</Text>
+          <MaterialIcons name="chevron-right" size={20} color="#999" />
+        </TouchableOpacity>
+        <TouchableOpacity
+          style={styles.menuItem}
+          onPress={() => setScreen('textarea')}
+        >
+          <Text style={styles.menuText}>TextArea</Text>
+          <MaterialIcons name="chevron-right" size={20} color="#999" />
+        </TouchableOpacity>
+        <TouchableOpacity
+          style={styles.menuItem}
+          onPress={() => setScreen('skeleton')}
+        >
+          <Text style={styles.menuText}>Skeleton</Text>
           <MaterialIcons name="chevron-right" size={20} color="#999" />
         </TouchableOpacity>
       </View>
@@ -433,6 +483,218 @@ export default function App() {
       </Card>
     </ScrollView>
   );
+  const SliderScreen = () => {
+    const [basicValue, setBasicValue] = useState(50);
+    const [stepValue, setStepValue] = useState(25);
+    const [customValue, setCustomValue] = useState(75);
+
+    return (
+      <ScrollView style={styles.container} keyboardShouldPersistTaps="handled">
+        <Text style={styles.sectionTitle}>Slider Examples</Text>
+
+        <View style={styles.section}>
+          <Text style={styles.subtitle}>Basic Slider:</Text>
+          <Text>Value: {basicValue}</Text>
+          <View style={{ height: 8 }} />
+          <Slider
+            value={basicValue}
+            onValueChange={setBasicValue}
+            minimumValue={0}
+            maximumValue={100}
+          />
+        </View>
+
+        <View style={styles.section}>
+          <Text style={styles.subtitle}>Step Slider (step: 25):</Text>
+          <Text>Value: {stepValue}</Text>
+          <View style={{ height: 8 }} />
+          <Slider
+            value={stepValue}
+            onValueChange={setStepValue}
+            minimumValue={0}
+            maximumValue={100}
+            step={25}
+          />
+        </View>
+
+        <View style={styles.section}>
+          <Text style={styles.subtitle}>Custom Colored Slider:</Text>
+          <Text>Value: {customValue}</Text>
+          <View style={{ height: 8 }} />
+          <Slider
+            value={customValue}
+            onValueChange={setCustomValue}
+            minimumValue={0}
+            maximumValue={100}
+            trackColor="#4de91eff"
+            thumbColor="#286d3fff"
+          />
+        </View>
+
+        <View style={styles.section}>
+          <Text style={styles.subtitle}>Disabled Slider:</Text>
+          <Slider value={60} disabled={true} />
+        </View>
+      </ScrollView>
+    );
+  };
+
+  const LoadingScreen = () => (
+    <ScrollView style={styles.container} keyboardShouldPersistTaps="handled">
+      <View style={styles.allLoading}>
+        <Text style={styles.label}>Circular Dots</Text>
+        <View style={styles.loaderItem}>
+          <CircularDotsLoader size={50} dotSize={8} />
+        </View>
+        <Text style={styles.label}>Circular Dots Custom Color</Text>
+        <View style={styles.loaderItem}>
+          <CircularDotsLoader size={50} dotSize={8} color="red" />
+        </View>
+
+        <Text style={styles.label}>Wave</Text>
+        <View style={styles.loaderItem}>
+          <WaveLoader dotCount={5} />
+        </View>
+
+        <Text style={styles.label}>Pulse Rings</Text>
+        <View style={styles.loaderItem}>
+          <PulseRingsLoader size={80} />
+        </View>
+
+        <Text style={styles.label}>Bar</Text>
+        <View style={styles.loaderItem}>
+          <BarLoader barCount={5} />
+        </View>
+
+        <Text style={styles.label}>Orbit</Text>
+        <View style={styles.loaderItem}>
+          <OrbitLoader size={60} />
+        </View>
+
+        <Text style={styles.label}>Square</Text>
+        <View style={styles.loaderItem}>
+          <SquareLoader size={50} />
+        </View>
+      </View>
+    </ScrollView>
+  );
+
+  const SnackbarScreen = () => {
+    const [simpleVisible, setSimpleVisible] = useState(false);
+    const [actionVisible, setActionVisible] = useState(false);
+
+    return (
+      <View style={styles.container}>
+        <Text style={styles.sectionTitle}>Snackbar Examples</Text>
+
+        <View style={styles.section}>
+          <Button
+            label="Show Simple Snackbar"
+            onPress={() => setSimpleVisible(true)}
+          />
+        </View>
+
+        <View style={styles.section}>
+          <Button
+            label="Show Snackbar with Action"
+            onPress={() => setActionVisible(true)}
+          />
+        </View>
+
+        <Snackbar
+          visible={simpleVisible}
+          message="This is a simple snackbar"
+          onDismiss={() => setSimpleVisible(false)}
+        />
+
+        <Snackbar
+          visible={actionVisible}
+          message="Message archived"
+          action={{
+            label: 'Undo',
+            onPress: () => {
+              setActionVisible(false);
+              Alert.alert('Action', 'Undo pressed');
+            },
+          }}
+          onDismiss={() => setActionVisible(false)}
+        />
+      </View>
+    );
+  };
+
+  const TextAreaScreen = () => {
+    const [text, setText] = useState('');
+
+    return (
+      <ScrollView style={styles.container} keyboardShouldPersistTaps="handled">
+        <Text style={styles.sectionTitle}>TextArea Examples</Text>
+
+        <TextArea
+          label="Simple TextArea"
+          placeholder="Type your message here..."
+          value={text}
+          onChangeText={setText}
+          maxLength={250}
+        />
+
+        <TextArea
+          label="With Error"
+          placeholder="Type something..."
+          error="This field is required"
+          maxLength={250}
+        />
+
+        <TextArea
+          label="Disabled TextArea"
+          placeholder="This input is disabled..."
+          value="Read-only content"
+          disabled
+          maxLength={250}
+        />
+      </ScrollView>
+    );
+  };
+
+  const SkeletonScreen = () => (
+    <ScrollView style={styles.container}>
+      <Text style={styles.sectionTitle}>Skeleton Examples</Text>
+
+      <View style={styles.section}>
+        <Text style={styles.subtitle}>Text Skeleton:</Text>
+        <Skeleton variant="text" width="80%" />
+        <View style={{ height: 8 }} />
+        <Skeleton variant="text" width="60%" />
+      </View>
+
+      <View style={styles.section}>
+        <Text style={styles.subtitle}>Circle Skeleton:</Text>
+        <Skeleton variant="circle" width={60} />
+      </View>
+
+      <View style={styles.section}>
+        <Text style={styles.subtitle}>Rectangle Skeleton:</Text>
+        <Skeleton width="100%" height={120} />
+      </View>
+
+      <View style={styles.section}>
+        <Text style={styles.subtitle}>Card Loading Example:</Text>
+        <View style={styles.card}>
+          <View style={styles.cardHeader}>
+            <Skeleton variant="circle" width={40} />
+            <View style={{ marginLeft: 12, flex: 1 }}>
+              <Skeleton variant="text" width="50%" />
+              <View style={{ height: 8 }} />
+              <Skeleton variant="text" width="30%" />
+            </View>
+          </View>
+          <View style={{ marginTop: 12 }}>
+            <Skeleton height={200} />
+          </View>
+        </View>
+      </View>
+    </ScrollView>
+  );
 
   return (
     <SafeAreaProvider>
@@ -452,6 +714,11 @@ export default function App() {
           {screen === 'fab' && <FABScreen />}
           {screen === 'dialog' && <DialogScreen />}
           {screen === 'card' && <CardScreen />}
+          {screen === 'slider' && <SliderScreen />}
+          {screen === 'loading' && <LoadingScreen />}
+          {screen === 'snackbar' && <SnackbarScreen />}
+          {screen === 'textarea' && <TextAreaScreen />}
+          {screen === 'skeleton' && <SkeletonScreen />}
         </SafeAreaView>
       </ThemeProvider>
     </SafeAreaProvider>
@@ -550,5 +817,39 @@ const styles = StyleSheet.create({
     position: 'absolute',
     right: 20,
     bottom: 30,
+  },
+  loadingRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    paddingVertical: 16,
+  },
+  loadingExample: {
+    alignItems: 'center',
+  },
+  allLoading: {
+    marginTop: 20,
+  },
+  loaderItem: {
+    display: 'flex',
+    justifyContent: 'center',
+    padding: 15,
+    marginBottom: 20,
+    height: 100,
+  },
+  label: {
+    marginBottom: 25,
+    fontSize: 16,
+    color: '#666',
+    fontWeight: '800',
+  },
+  card: {
+    padding: 16,
+    borderRadius: 8,
+    borderWidth: 1,
+    borderColor: '#eee',
+  },
+  cardHeader: {
+    flexDirection: 'row',
+    alignItems: 'center',
   },
 });

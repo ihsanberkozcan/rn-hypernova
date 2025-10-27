@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable react-native/no-inline-styles */
 import { useEffect, useLayoutEffect, useRef, type FC } from 'react';
 import {
