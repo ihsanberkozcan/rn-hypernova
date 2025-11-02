@@ -231,6 +231,23 @@ export default function App() {
       />
 
       <Button
+        icon={<MaterialIcons name="favorite" size={24} color="#fff" />}
+        iconPosition="left"
+        size="medium"
+        variant="filled"
+        style={styles.buttonMargin}
+        onPress={() => Alert.alert('Clicked!')}
+      />
+
+      <Button
+        icon={<MaterialIcons name="favorite" size={24} color="#137fec" />}
+        iconPosition="left"
+        size="medium"
+        variant="outlined"
+        style={styles.buttonMargin}
+        onPress={() => Alert.alert('Clicked!')}
+      />
+      <Button
         label="Large Button"
         size="large"
         icon={<MaterialIcons name="arrow-forward" size={24} color="white" />}
@@ -248,12 +265,23 @@ export default function App() {
           Alert.alert('Clicked!', 'Custom styled button was clicked')
         }
       />
+      <Button
+        label="Outlined"
+        variant="outlined"
+        onPress={() => Alert.alert('Clicked!')}
+        style={styles.buttonMargin}
+      />
+      <Button
+        label="Text"
+        variant="text"
+        onPress={() => Alert.alert('Clicked!')}
+        style={styles.buttonMargin}
+      />
 
       <Button
         label="Disabled Button"
         disabled={true}
-        icon={<MaterialIcons name="block" size={24} color="white" />}
-        onPress={() => Alert.alert('Clicked!', 'You will not see this message')}
+        onPress={() => Alert.alert('Clicked!')}
         style={styles.buttonMargin}
       />
     </ScrollView>

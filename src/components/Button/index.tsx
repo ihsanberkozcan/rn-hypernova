@@ -11,9 +11,10 @@ import {
 import { useTheme } from '../../context/ThemeContext';
 
 export type ButtonSize = 'small' | 'medium' | 'large';
+export type ButtonVariant = 'filled' | 'outlined' | 'text';
 
 export interface ButtonProps extends TouchableOpacityProps {
-  label: string;
+  label?: string;
   size?: ButtonSize;
   icon?: ReactNode;
   iconPosition?: 'left' | 'right';
@@ -21,8 +22,20 @@ export interface ButtonProps extends TouchableOpacityProps {
   onLongPress?: () => void;
   style?: ViewStyle;
   labelStyle?: TextStyle;
-  variant?: 'filled' | 'outlined' | 'text';
+  variant?: ButtonVariant;
 }
+
+const sizeStyles: Record<ButtonSize, ViewStyle> = {
+  small: { paddingVertical: 8, paddingHorizontal: 16 },
+  medium: { paddingVertical: 12, paddingHorizontal: 24 },
+  large: { paddingVertical: 16, paddingHorizontal: 32 },
+};
+
+const iconOnlySizeStyles: Record<ButtonSize, ViewStyle> = {
+  small: { width: 36, height: 36 },
+  medium: { width: 44, height: 44 },
+  large: { width: 56, height: 56 },
+};
 
 const Button: FC<ButtonProps> = ({
   label,
@@ -38,9 +51,13 @@ const Button: FC<ButtonProps> = ({
   ...rest
 }) => {
   const { colors } = useTheme();
+  const isIconOnly = !!icon && !label;
 
   const getButtonStyles = (): ViewStyle[] => {
-    const baseStyles: ViewStyle[] = [styles.button, styles[size]];
+    const baseStyles: ViewStyle[] = [
+      styles.button,
+      isIconOnly ? iconOnlySizeStyles[size] : sizeStyles[size],
+    ];
 
     switch (variant) {
       case 'outlined':
@@ -48,7 +65,7 @@ const Button: FC<ButtonProps> = ({
           backgroundColor: 'transparent',
           borderWidth: 1,
           borderColor: disabled ? colors.disabled : colors.primary,
-        } as ViewStyle);
+        });
         break;
       case 'text':
         baseStyles.push({
@@ -62,53 +79,47 @@ const Button: FC<ButtonProps> = ({
         });
     }
 
-    if (disabled) {
-      baseStyles.push(styles.disabled);
-    }
-
-    if (style) {
-      baseStyles.push(style);
-    }
+    if (disabled) baseStyles.push(styles.disabled);
+    if (style) baseStyles.push(style);
 
     return baseStyles;
   };
 
   const getLabelStyles = (): TextStyle[] => {
-    const baseStyles: TextStyle[] = [styles.label, styles[`${size}Text`]];
+    const baseStyles: TextStyle[] = [styles.label, textSizeStyles[size]];
 
     switch (variant) {
       case 'outlined':
       case 'text':
         baseStyles.push({
           color: disabled ? colors.disabled : colors.primary,
-        } as TextStyle);
+        });
         break;
       default:
         baseStyles.push({
           color: disabled
             ? (colors.textLight ?? '#bbb')
-            : colors.background
-              ? colors.background
-              : '#fff',
-        } as TextStyle);
+            : (colors.background ?? '#fff'),
+        });
     }
 
-    if (labelStyle) {
-      baseStyles.push(labelStyle);
-    }
-
+    if (labelStyle) baseStyles.push(labelStyle);
     return baseStyles;
   };
 
-  const renderContent = () => {
+  const renderContent = (): ReactNode => {
     const iconElement = icon ? (
-      <View style={styles.iconContainer}>{icon}</View>
+      <View style={isIconOnly ? undefined : styles.iconContainer}>{icon}</View>
     ) : null;
+
+    if (isIconOnly) {
+      return iconElement;
+    }
 
     return (
       <>
         {iconPosition === 'left' && iconElement}
-        <Text style={getLabelStyles()}>{label}</Text>
+        {label && <Text style={getLabelStyles()}>{label}</Text>}
         {iconPosition === 'right' && iconElement}
       </>
     );
@@ -123,9 +134,22 @@ const Button: FC<ButtonProps> = ({
       activeOpacity={0.7}
       {...rest}
     >
-      <View style={styles.contentContainer}>{renderContent()}</View>
+      <View
+        style={[
+          styles.contentContainer,
+          isIconOnly && styles.iconOnlyContainer,
+        ]}
+      >
+        {renderContent()}
+      </View>
     </TouchableOpacity>
   );
+};
+
+const textSizeStyles: Record<ButtonSize, TextStyle> = {
+  small: { fontSize: 14 },
+  medium: { fontSize: 16 },
+  large: { fontSize: 18 },
 };
 
 const styles = StyleSheet.create({
@@ -139,35 +163,17 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
+  iconOnlyContainer: {
+    flexDirection: 'column',
+  },
   iconContainer: {
     marginHorizontal: 8,
-  },
-  small: {
-    paddingVertical: 8,
-    paddingHorizontal: 16,
-  },
-  medium: {
-    paddingVertical: 12,
-    paddingHorizontal: 24,
-  },
-  large: {
-    paddingVertical: 16,
-    paddingHorizontal: 32,
   },
   disabled: {
     opacity: 0.5,
   },
   label: {
     textAlign: 'center',
-  },
-  smallText: {
-    fontSize: 14,
-  },
-  mediumText: {
-    fontSize: 16,
-  },
-  largeText: {
-    fontSize: 18,
   },
 });
 
